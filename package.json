@@ -1,0 +1,25 @@
+{
+  "name": "node-red-contrib--visual-path-transition-pkjq",
+  "version": "0.0.1",
+  "description": "visual effect of path transition",
+  "node-red": {
+    "nodes": {
+      "path-finder": "visual-path-transition-node.js"
+    }
+  },
+  "keywords": [
+    "visual-path-transition",
+    "nodered",
+    "path finder"
+  ],
+  "author": "pkjq",
+  "license": "MIT",
+  "dependencies": {
+    "ngraph.graph": "^0.0.14",
+    "ngraph.path": "^1.0.2"
+  },
+  "repository": {},
+  "scripts": {
+    "test": "mocha"
+  }
+}

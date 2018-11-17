@@ -1,0 +1,11 @@
+This software uses:
+
+    ===
+    * ngraph.graph ( https://github.com/anvaka/ngraph.graph )
+    Licensed under BSD 3-clause (c) Andrei Kashcha
+    ===
+
+    ===
+    * ngraph.path ( https://github.com/anvaka/ngraph.path )
+    Licensed under MIT (c) Andrei Kashcha
+    ===
