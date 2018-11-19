@@ -20,7 +20,7 @@ function VerticesAsNumberToArray(value) {
 function VerticesArrayToAsNumber(bitArray) {
     let result = 0;
     for (let bit of bitArray) {
-        assert(bit > 0);
+        assert(bit > 0, 'bit must be more than 0!');
         result |= (1<<(bit-1));
     }
     return result;
