@@ -1,7 +1,7 @@
 {
-  "name": "node-red-contrib--visual-path-transition-pkjq",
+  "name": "node-red-contrib--graph-light-controller-pkjq",
   "version": "0.0.1",
-  "description": "visual effect of path transition",
+  "description": "graph light controller",
   "node-red": {
     "nodes": {
       "graph-light-controller": "graph-light-controller-node.js"
@@ -10,7 +10,7 @@
   "keywords": [
     "visual-path-transition",
     "nodered",
-    "path finder"
+    "graph light controller"
   ],
   "author": "pkjq",
   "license": "MIT",
@@ -20,7 +20,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/pkjq/node-red-contrib--visual-path-transition.git"
+    "url": "https://github.com/pkjq/node-red-contrib--graph-light-controller.git"
   },
   "scripts": {
     "test": "mocha"

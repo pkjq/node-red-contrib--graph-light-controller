@@ -1,4 +1,4 @@
-# Visual effect of path transition
+# Graph Light Controller
 TBD
 
 ---
