@@ -64,104 +64,106 @@ describe('Transition-Logic', function () {
     }
 
 
-    // count of vertices at start equal count at finish
-	it('calculatePaths: [=]', function () {
-        const start  = [1,2,3];
-        const finish = [10,11,8];
-        const result = logic.calculatePaths(start, finish);
+    describe('calculatePaths', function () {
+        // count of vertices at start equal count at finish
+        it('[=]', function () {
+            const start  = [1,2,3];
+            const finish = [10,11,8];
+            const result = logic.calculatePaths(start, finish);
 
-        assert.ok(result.length > 0, 'path not exist!');
-        checkLastStep(result, finish);
+            assert.ok(result.length > 0, 'path not exist!');
+            checkLastStep(result, finish);
 
-        assert.ok(result.length <= 3, 'check effectivity');
-    });
+            assert.ok(result.length <= 3, 'check effectivity');
+        });
 
-	it('calculatePaths: [>]', function () {
-        const start  = [1,2,3];
-        const finish = [10,11];
-        const result = logic.calculatePaths(start, finish);
+        it('[>]', function () {
+            const start  = [1,2,3];
+            const finish = [10,11];
+            const result = logic.calculatePaths(start, finish);
 
-        assert.ok(result.length > 0, 'path not exist!');
-        checkLastStep(result, finish);
+            assert.ok(result.length > 0, 'path not exist!');
+            checkLastStep(result, finish);
 
-        assert.ok(result.length <= 3, 'check effectivity');
+            assert.ok(result.length <= 3, 'check effectivity');
 
-        {
-            let discardVertexExist = false;
-            for (let step of result)
-                if (step.includes(DiscardVertexAt)) {
-                    discardVertexExist = true;
-                    break;
-                }
-            assert.equal(discardVertexExist, true, "path doen't contains 'DiscardVertexAt' vertex");
-        }
-    });
+            {
+                let discardVertexExist = false;
+                for (let step of result)
+                    if (step.includes(DiscardVertexAt)) {
+                        discardVertexExist = true;
+                        break;
+                    }
+                assert.equal(discardVertexExist, true, "path doen't contains 'DiscardVertexAt' vertex");
+            }
+        });
 
-    it('calculatePaths: [<]', function () {
-        const start  = [1,2];
-        const finish = [10,11,9];
-        const result = logic.calculatePaths(start, finish);
+        it('[<]', function () {
+            const start  = [1,2];
+            const finish = [10,11,9];
+            const result = logic.calculatePaths(start, finish);
 
-        assert.ok(result.length > 0, 'path not exist!');
-        checkLastStep(result, finish);
+            assert.ok(result.length > 0, 'path not exist!');
+            checkLastStep(result, finish);
 
-        { // 
-            const firstStep = result[0];
-            assert.ok(firstStep.includes(SpawnVertexFrom), "first step must contains 'spawnVertexFrom' vertex");
-        }
+            { // 
+                const firstStep = result[0];
+                assert.ok(firstStep.includes(SpawnVertexFrom), "first step must contains 'spawnVertexFrom' vertex");
+            }
 
-        assert.ok(result.length <= 3, 'check effectivity');
-    });
+            assert.ok(result.length <= 3, 'check effectivity');
+        });
 
 
-	it('calculatePaths: effectivity', function () {
-        const start  = [1,2];
-        const finish = [10,11];
-        const result = logic.calculatePaths(start, finish);
+        it('effectivity', function () {
+            const start  = [1,2];
+            const finish = [10,11];
+            const result = logic.calculatePaths(start, finish);
 
-        assert.ok(result.length > 0, 'path not exist!');
-        assert.equal(result.length, 3);
+            assert.ok(result.length > 0, 'path not exist!');
+            assert.equal(result.length, 3);
 
-        // step[1]
-        assert.ok(result[0].includes(4));
-        assert.ok(result[0].includes(5));
-        assert.equal(result[0].length, 2);
+            // step[1]
+            assert.ok(result[0].includes(4));
+            assert.ok(result[0].includes(5));
+            assert.equal(result[0].length, 2);
 
-        // step[2]
-        assert.ok(result[1].includes(7));
-        assert.ok(result[1].includes(8));
-        assert.equal(result[1].length, 2);
+            // step[2]
+            assert.ok(result[1].includes(7));
+            assert.ok(result[1].includes(8));
+            assert.equal(result[1].length, 2);
 
-        // step[3]
-        assert.ok(result[2].includes(10));
-        assert.ok(result[2].includes(11));
-        assert.equal(result[2].length, 2);
-    });    
+            // step[3]
+            assert.ok(result[2].includes(10));
+            assert.ok(result[2].includes(11));
+            assert.equal(result[2].length, 2);
+        });    
 
-    it('calculatePaths: parameters not modified', function () {
-        const start  = [1];
-        const finish = [11,10,9,8,7,6,5,4,3,2];
-        logic.calculatePaths(start, finish);
+        it('parameters not modified', function () {
+            const start  = [1];
+            const finish = [11,10,9,8,7,6,5,4,3,2];
+            logic.calculatePaths(start, finish);
 
-        assert.deepEqual(start,     [1]);
-        assert.deepEqual(finish,    [11,10,9,8,7,6,5,4,3,2]);
-    });
+            assert.deepEqual(start,     [1]);
+            assert.deepEqual(finish,    [11,10,9,8,7,6,5,4,3,2]);
+        });
 
-    it('calculatePaths: parameters validation', function () {
-        assert.throws(() => logic.calculatePaths(1, [2]));
-        assert.throws(() => logic.calculatePaths([1], 2));
+        it('parameters validation', function () {
+            assert.throws(() => logic.calculatePaths(1, [2]));
+            assert.throws(() => logic.calculatePaths([1], 2));
 
-        assert.throws(() => logic.calculatePaths('1', [2]));
-        assert.throws(() => logic.calculatePaths([1], '2'));
-    });
-    
-    it('calculatePaths: no any action needed', function () {
-        const result = logic.calculatePaths([], []);
+            assert.throws(() => logic.calculatePaths('1', [2]));
+            assert.throws(() => logic.calculatePaths([1], '2'));
+        });
+        
+        it('no any action needed', function () {
+            const result = logic.calculatePaths([], []);
 
-        assert.equal(result, null);
-    });
+            assert.equal(result, null);
+        });
 
-    it('calculatePaths: no path exist', function () {
-        assert.throws(() => logic.calculatePaths([1], [12]));
+        it('no path exist', function () {
+            assert.throws(() => logic.calculatePaths([1], [12]));
+        });
     });
 });
