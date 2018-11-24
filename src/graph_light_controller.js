@@ -115,11 +115,6 @@ class Logic extends EventEmitter{
             const resultAsVertices = this._transitionLogic.calculatePaths(start, finish);
             let transitionData = resultAsVertices.map(val => { return VerticesArrayToAsNumber(val); });
             
-            { // TODO: fix this (now workaround for turn off) BUG: утилизирующая точка остается светящейся
-                if (transitionData[transitionData.length-1] !== this._currentState.final)
-                    transitionData.push(this._currentState.final);
-            }
-
             this._transitionStack.set(transitionData);
         }
 

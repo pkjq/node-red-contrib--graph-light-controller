@@ -59,6 +59,8 @@ describe('Transition-Logic', function () {
 
     function checkLastStep(result, finish) {
         const lastStep = result[result.length-1];
+        assert.equal(lastStep.length, finish.length, 'result contains more vertices than finish: [' + result[result.length-1] + '] [' + finish + ']');
+
         for (let v of finish)
             assert.ok(lastStep.includes(v), 'result: ' + lastStep.join() + ' | must contain: ' + v);
     }
@@ -84,7 +86,6 @@ describe('Transition-Logic', function () {
 
             assert.ok(result.length > 0, 'path not exist!');
             checkLastStep(result, finish);
-
             assert.ok(result.length <= 3, 'check effectivity');
 
             {
@@ -94,6 +95,27 @@ describe('Transition-Logic', function () {
                         discardVertexExist = true;
                         break;
                     }
+                assert.equal(discardVertexExist, true, "path doen't contains 'DiscardVertexAt' vertex");
+            }
+        });
+
+        it('[turn off]', function () {
+            const start  = [1,2,3];
+            const finish = [];
+            const result = logic.calculatePaths(start, finish);
+
+            assert.ok(result.length > 0, 'path not exist!');
+            checkLastStep(result, finish);
+            assert.ok(result.length <= 4, 'check effectivity');
+
+            {
+                let discardVertexExist = false;
+                for (let step of result) {
+                    if (step.includes(DiscardVertexAt)) {
+                        discardVertexExist = true;
+                        break;
+                    }
+                }
                 assert.equal(discardVertexExist, true, "path doen't contains 'DiscardVertexAt' vertex");
             }
         });
@@ -112,6 +134,22 @@ describe('Transition-Logic', function () {
             }
 
             assert.ok(result.length <= 3, 'check effectivity');
+        });
+
+        it('[turn on]', function () {
+            const start  = [];
+            const finish = [1,2,3];
+            const result = logic.calculatePaths(start, finish);
+
+            assert.ok(result.length > 0, 'path not exist!');
+            checkLastStep(result, finish);
+            assert.ok(result.length <= 4, 'check effectivity');
+
+            { // 
+                const firstStep = result[0];
+                for (let vertex of firstStep)
+                    assert.equal(vertex, SpawnVertexFrom, "first step must contains only 'spawnVertexFrom' vertex");
+            }
         });
 
 

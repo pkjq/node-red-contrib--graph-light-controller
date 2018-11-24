@@ -77,9 +77,9 @@ class Algorithm {
 
                 for (let i = 0; i < length; ++i) {
                     let path = this._pathFinder.find(start[i], finish[i]);
-                    
-                    const increase = (i >= startLen);
-                    if (increase)
+                   
+                    const duplicateExtendedPointAtStart = (i >= startLen);
+                    if (duplicateExtendedPointAtStart)
                         path.push(path[AlgorithmWithReversedResult ? (path.length-1) : 0]);
                     const pathLen = path.length;
                     
@@ -99,7 +99,8 @@ class Algorithm {
                 finish.push(finish.splice(0, 1)[0]);
             }
         }
-        
+
+
         // convert paths to steps
         let paths = resultPathData.paths;
         if (AlgorithmWithReversedResult) // reverse alll paths
@@ -123,6 +124,20 @@ class Algorithm {
             }
 
             steps[stepIndex] = [...steps[stepIndex]]; // convert to array
+        }
+
+        { // last step to turn off
+            let needAppendLastStep = false;
+            let step = [];
+            for (let vertex of steps[steps.length-1]) {
+                if (originalFinish.includes(vertex))
+                    step.push(vertex);
+                else
+                    needAppendLastStep = true;
+            }
+
+            if (needAppendLastStep)
+                steps.push(step);
         }
 
         return steps;
