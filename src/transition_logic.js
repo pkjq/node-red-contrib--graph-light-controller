@@ -116,10 +116,10 @@ class Algorithm {
                 if (p.length > i)
                     steps[stepIndex].add(p[i].id);
                 else {
-                    const edge = p[p.length-1].id;
+                    const vertex = p[p.length-1].id;
 
-                    if (originalFinish.includes(edge))
-                        steps[stepIndex].add(edge);
+                    if (originalFinish.includes(vertex))
+                        steps[stepIndex].add(vertex);
                 }
             }
 
