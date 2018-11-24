@@ -4,7 +4,7 @@
 const assert = require('assert');
 
 
-const EffectLogic = require('../src/effect_logic');
+const TransitionLogic = require('../src/transition_logic');
 
 
 const GraphStr =
@@ -47,7 +47,7 @@ const DiscardVertexAt = 9;
 
 
 
-describe('Effect-Logic', function () {
+describe('Transition-Logic', function () {
     const config = {
         spawnVertexFrom: SpawnVertexFrom.toString(),
         discardVertexAt: DiscardVertexAt.toString(),
@@ -55,7 +55,7 @@ describe('Effect-Logic', function () {
         graphVertices: GraphStr,
     };
 
-    let logic = new EffectLogic(config);
+    let logic = new TransitionLogic(config);
 
     function checkLastStep(result, finish) {
         const lastStep = result[result.length-1];

@@ -52,6 +52,13 @@ class Zones {
 
         return zoneNames;
     }
+
+    get zoneNames() {
+        let zones = [];
+        for (let zone in this._zones)
+            zones.push(zone);
+        return zones;
+    }
 };
 
 

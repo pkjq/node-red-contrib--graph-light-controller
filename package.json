@@ -4,8 +4,7 @@
   "description": "visual effect of path transition",
   "node-red": {
     "nodes": {
-      "path-finder": "visual-path-transition-node.js",
-      "zones": "zones-node.js"
+      "graph-light-controller": "graph-light-controller-node.js"
     }
   },
   "keywords": [

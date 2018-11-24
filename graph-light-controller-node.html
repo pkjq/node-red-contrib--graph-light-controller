@@ -1,0 +1,110 @@
+<script type="text/javascript">
+    RED.nodes.registerType('pkjq-graph-light-controller', {
+        category: 'SD SmartHouse',
+        icon: "batch.png",
+        color: "#80bfff",
+        inputs: 1,
+        outputs: 2,
+        outputLabels: ['zones', 'transition data'],
+        defaults: {
+            name:                                   { value: "",        required: true },
+            
+            zones:                                  { value: "",        required: true },
+            
+            spawnVertexFrom:                        { value: "",        required: true },
+            discardVertexAt:                        { value: "",        required: true },
+            
+            graphVertices:                          { value: "",        required: true },
+
+            transitionDelay:                        { value: 1000,      required: true,     validate: RED.validators.number()},
+            transitionConfirmationTimeout:          { value: 500,       required: true,     validate: RED.validators.number()},
+        },
+
+        label: function() {
+            return this.name || "graph-light-controller"
+        },
+
+        oneditprepare: function () {
+            var that = this;
+
+            this.editors = {
+                zones: RED.editor.createEditor({
+                    id:     'node-input-zones-editor',
+                    mode:   'ace/mode/json',
+                    value:  $("#node-input-zones").val(),
+                }),
+
+                graphVertices: RED.editor.createEditor({
+                    id:     'node-input-graphVertices-editor',
+                    mode:   'ace/mode/text',
+                    value:  $("#node-input-graphVertices").val(),
+                }),
+            };
+            this.editors[0].focus();
+        },
+        oneditsave: function () {
+            $("#node-input-zones").val(this.editors.zones.getValue());
+            $("#node-input-graphVertices").val(this.editors.graphVertices.getValue());
+
+            for (let i in this.editors)
+                this.editors[i].destroy();
+            delete this.editors;
+        },
+        oneditcancel: function () {
+            for (let i in this.editors)
+                this.editors[i].destroy();
+            delete this.editors;
+        },
+        oneditresize: function (size) {
+            this.resize();
+            for (let i in this.editors)
+                this.editors[i].resize();
+        },
+    });
+</script>
+
+<script type="text/x-red" data-template-name="pkjq-graph-light-controller">
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="name">
+    </div>
+    <br>
+
+    <div class="form-row" style="margin-bottom: 0px;">
+        <label for="node-input-zones" style="width: 100% !important;"><i class="fa fa-object-group"></i> Zones:</label>
+        <input type="hidden" id="node-input-zones" autofocus="autofocus">
+    </div>
+    <div class="form-row node-text-editor-row">
+        <div style="height:500px; min-height:200px;" class="node-text-editor" id="node-input-zones-editor"></div>
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-spawnVertexFrom"><i class="fa fa-sign-out"></i> Spawning vertex</label>
+        <input type="text" id="node-input-spawnVertexFrom" placeholder="spawn from">
+    </div>
+    <div class="form-row">
+        <label for="node-input-discardVertexAt"><i class="fa fa-sign-in"></i> Discard vertex at</label>
+        <input type="text" id="node-input-discardVertexAt" placeholder="discard vertex at">
+    </div>
+
+    <div class="form-row" style="margin-bottom: 0px;">
+        <label for="node-input-graphVertices" style="width: 100% !important;"><i class="fa fa-link"></i> Graph vertices and weights:</label>
+        <input type="hidden" id="node-input-graphVertices" autofocus="autofocus">
+    </div>
+    <div class="form-row node-text-editor-row">
+        <div style="height:500px; min-height:250px;" class="node-text-editor" id="node-input-graphVertices-editor"></div>
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-transitionDelay"><i class="fa fa-clock-o"></i> Transition delay</label>
+        <input type="text" id="node-input-transitionDelay" placeholder="transition delay (ms)">
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-transitionConfirmationTimeout"><i class="fa fa-clock-o"></i> Transition confirmation timeout</label>
+        <input type="text" id="node-input-transitionConfirmationTimeout" placeholder="transition confirmation timeout (ms)">
+    </div>    
+</script>
+
+<script type="text/x-red" data-help-name="pkjq-graph-light-controller">
+</script>
