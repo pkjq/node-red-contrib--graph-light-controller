@@ -203,5 +203,23 @@ describe('Transition-Logic', function () {
         it('no path exist', function () {
             assert.throws(() => logic.calculatePaths([1], [12]));
         });
+
+        it('start -> start + new', function () {
+            const start  = [4,7];       // 'zone_1'
+            const finish = [4,5,7,8];   // 'zone_1' + 'zone_2'
+            const result = logic.calculatePaths(start, finish);
+
+            assert.ok(result.length > 0, 'path not exist!');
+            assert.equal(result.length, 2);
+
+            // step[1]
+            assert.ok(result[0].includes(4));
+            assert.ok(result[0].includes(7));
+
+            // step[2]
+            assert.ok(result[1].includes(4));
+            assert.ok(result[1].includes(7));
+            assert.equal(result[1].length, finish.length);
+        });        
     });
 });

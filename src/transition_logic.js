@@ -13,6 +13,10 @@ function ResizeArray(array, newSize, filler) {
         array.push(filler);
 }
 
+function GetIntersection(start, finish) {
+    return start.filter(p => finish.includes(p));
+}
+
 class OptimalCriteria {
     constructor() {
     }
@@ -49,12 +53,13 @@ class Algorithm {
         else if ((start.length + finish.length) === 0)
             return; // no any action needed
 
-        { // copy
-            start   = start.concat();
-            finish  = finish.concat();
+        const originalFinish = finish.concat();
+        const intersection = GetIntersection(start, finish);
+        { // copy points without static points
+            start   = start.filter(p => !intersection.includes(p));
+            finish  = finish.filter(p => !intersection.includes(p));
         }
 
-        const originalFinish = finish.concat();
 
         const startLen = start.length;
         const diff = finish.length - startLen;
@@ -110,7 +115,7 @@ class Algorithm {
         let steps = [];
         for (let i = 1; i < resultPathData.maxLen; ++i) { // skip start step
             const stepIndex = i-1;
-            steps[stepIndex] = new Set;
+            steps[stepIndex] = new Set(intersection);
 
             for (let p of resultPathData.paths) {
                 if (p.length > i)
