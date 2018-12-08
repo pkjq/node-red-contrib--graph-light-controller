@@ -78,11 +78,11 @@ class Logic extends EventEmitter{
     feedback(value) {
         this._currentState.now = value;
 
-        if (this._currentState.confirmation.resole) {
+        if (this._currentState.confirmation.resolve) {
             assert(this._currentState.confirmation.reject, 'Invariant broken');
 
             if (this._currentState.confirmation.data === value)
-                this._currentState.confirmation.resole(value);
+                this._currentState.confirmation.resolve(value);
             else
                 this._currentState.confirmation.reject(new Error('feedback: unexpected value of path'));
         }
@@ -144,7 +144,7 @@ class Logic extends EventEmitter{
             this._currentState.confirmation.data = data;
 
             setTimeout(reject, this._config.transitionConfirmationTimeout);
-            this._currentState.confirmation.resole = resolve;
+            this._currentState.confirmation.resolve = resolve;
             this._currentState.confirmation.reject = reject;
 
             this.emit('transition-data', transitionDataMsg);
