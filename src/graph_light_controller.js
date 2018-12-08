@@ -35,6 +35,8 @@ class Logic extends EventEmitter{
             now: 0,
             final: 0,
 
+            inTransition: false,
+
             confirmation: {
                 resolve: undefined,
                 reject:  undefined,
@@ -78,7 +80,7 @@ class Logic extends EventEmitter{
     feedback(value) {
         this._currentState.now = value;
 
-        if (this._currentState.confirmation.resolve) {
+        if (this._currentState.inTransition && this._currentState.confirmation.resolve) {
             assert(this._currentState.confirmation.reject, 'Invariant broken');
 
             if (this._currentState.confirmation.data === value)
@@ -86,6 +88,8 @@ class Logic extends EventEmitter{
             else
                 this._currentState.confirmation.reject(new Error('feedback: unexpected value of path'));
         }
+        else
+            this._currentState.final = value;
     }
 
     get zones() {
@@ -105,11 +109,12 @@ class Logic extends EventEmitter{
     _calculateTransition(force) {
         const activeZones = ActiveZones2Array(this._currentState.zones);
         const newFinal = this._zones.Resolve(activeZones);
-        if (force && !this._transitionLogic.empty) // changed 'force' flag
+
+        if (force && !this._transitionStack.empty) // changed 'force' flag
             this._transitionStack.cancel();
         else if (newFinal === this._currentState.final) // already in requested state
             return false;
-        else if (!this._transitionLogic.empty) // previrous transition in progress
+        else if (!this._transitionStack.empty) // previrous transition in progress
             this._transitionStack.cancel();
 
         this._currentState.final = newFinal;
@@ -131,6 +136,7 @@ class Logic extends EventEmitter{
 
     _startTransition() {
         this.emit('transition-started');
+        this._currentState.inTransition = true;
         this._doSendTransitionData(0);
     }
 
@@ -167,12 +173,15 @@ class Logic extends EventEmitter{
             this._doSendTransitionData(this._config.transitionDelay || 0);
         else {
             assert(value === this._currentState.final, 'logic error: wait(' + this._currentState.final + ') real(' + value + ')');
+            this._currentState.inTransition = false;
             this.emit('transition-completed', value);
         }
     }
 
     _onConfirmationError(err) {
         this._transitionStack.cancel();
+        this._currentState.final = this._currentState.now;
+        this._currentState.inTransition = false;
 
         this.emit('transition-error', err);
         // TODO: recalculte path (controller error)

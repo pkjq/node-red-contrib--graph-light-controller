@@ -1,6 +1,6 @@
 {
   "name": "node-red-contrib--graph-light-controller-pkjq",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "graph light controller",
   "node-red": {
     "nodes": {
