@@ -71,6 +71,10 @@ module.exports = function(RED) {
             });
 
             this.on('close', function(removed, done) {
+                if (this._redeployTimer) {
+                    clearTimeout(this._redeployTimer);
+                    delete this._redeployTimer;
+                }
                 this._controller.removeAllListeners();
                 
                 if (!removed)
@@ -85,9 +89,11 @@ module.exports = function(RED) {
                 done();
             });
 
-
             if (this.context().previousState)
-                this._controller.apply(this.context().previousState, true);
+                this._redeployTimer = setTimeout(() => {
+                    delete this._redeployTimer;
+                    this._controller.apply(this.context().previousState, false);
+                }, config.delayToRestoreStateAfterRedeploy);
         }
         catch (err) {
             this.error('Error: ' + err.message);

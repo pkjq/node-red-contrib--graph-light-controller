@@ -18,6 +18,8 @@
 
             transitionDelay:                        { value: 1000,      required: true,     validate: RED.validators.number()},
             transitionConfirmationTimeout:          { value: 500,       required: true,     validate: RED.validators.number()},
+
+            delayToRestoreStateAfterRedeploy:       { value: 800,       required: true,     validate: RED.validators.number()},
         },
 
         label: function() {
@@ -103,7 +105,12 @@
     <div class="form-row">
         <label for="node-input-transitionConfirmationTimeout"><i class="fa fa-clock-o"></i> Transition confirmation timeout</label>
         <input type="text" id="node-input-transitionConfirmationTimeout" placeholder="transition confirmation timeout (ms)">
-    </div>    
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-delayToRestoreStateAfterRedeploy"><i class="fa fa-clock-o"></i> Delay to restore state after re-deploy flow</label>
+        <input type="text" id="node-input-delayToRestoreStateAfterRedeploy" placeholder=" Delay to restore state after re-deploy flow (ms)">
+    </div>
 </script>
 
 <script type="text/x-red" data-help-name="pkjq-graph-light-controller">
