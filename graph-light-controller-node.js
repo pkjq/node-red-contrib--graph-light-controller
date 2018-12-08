@@ -37,7 +37,7 @@ module.exports = function(RED) {
                 this.status({fill: 'green', shape: 'dot', text: 'completed [' + value + ']'});
             });
             this._controller.on('transition-error', (err) => {
-                this.status({fill: 'red', shape: 'dot', text: err.message});
+                this.status({fill: 'red', shape: 'dot', text: (err ? err.message : null)});
             });
             
 
@@ -70,15 +70,24 @@ module.exports = function(RED) {
                 }
             });
 
-            this.on('close', function(done) {
+            this.on('close', function(removed, done) {
                 this._controller.removeAllListeners();
+                
+                if (!removed)
+                    this.context().previousState = this._controller.zones;
+
                 this._controller.destroy();
                 delete this._controller;
 
-                this.status({fill:'grey', text: 'standby'});
+                if (!removed)
+                    this.status({fill:'grey', text: 'standby'});
     
                 done();
             });
+
+
+            if (this.context().previousState)
+                this._controller.apply(this.context().previousState, true);
         }
         catch (err) {
             this.error('Error: ' + err.message);

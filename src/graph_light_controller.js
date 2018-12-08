@@ -78,10 +78,18 @@ class Logic extends EventEmitter{
     feedback(value) {
         this._currentState.now = value;
 
-        if (this._currentState.confirmation.data === value)
-            this._currentState.confirmation.resole(value);
-        else
-            this._currentState.confirmation.reject(new Error('feedback: unexpected value of path'));
+        if (this._currentState.confirmation.resole) {
+            assert(this._currentState.confirmation.reject, 'Invariant broken');
+
+            if (this._currentState.confirmation.data === value)
+                this._currentState.confirmation.resole(value);
+            else
+                this._currentState.confirmation.reject(new Error('feedback: unexpected value of path'));
+        }
+    }
+
+    get zones() {
+        return this._currentState.zones;
     }
 
     _onZonesChanged(force) {
